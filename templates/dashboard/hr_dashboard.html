@@ -1,0 +1,71 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<h1 class="text-2xl font-bold text-[#1e1e2d] mb-6">HR Dashboard</h1>
+
+<!-- Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white p-5 rounded-lg shadow">
+    <div class="text-sm text-gray-500">Total Employees</div>
+    <div class="text-3xl font-bold text-[#1e1e2d]">{{ employee_count }}</div>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow">
+    <div class="text-sm text-gray-500">Pending Leave Requests</div>
+    <div class="text-3xl font-bold text-[#1e1e2d]">{{ pending_leaves }}</div>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow">
+    <div class="text-sm text-gray-500">Present Today</div>
+    <div class="text-3xl font-bold text-green-600">{{ present_today }}</div>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow">
+    <div class="text-sm text-gray-500">Absent Today</div>
+    <div class="text-3xl font-bold text-red-500">{{ absent_today }}</div>
+  </div>
+</div>
+
+<!-- Payroll Summary -->
+<div class="mb-10">
+  <div class="bg-white p-6 rounded-lg shadow">
+    <div class="text-sm text-gray-500">Monthly Payroll (₹)</div>
+    <div class="text-3xl font-bold text-[#1e1e2d] mt-2">₹{{ payroll_total|floatformat:2 }}</div>
+  </div>
+</div>
+
+<!-- Recent Leave Requests Table -->
+<div class="bg-white p-6 rounded-lg shadow">
+  <h2 class="text-lg font-semibold mb-4 text-[#1e1e2d]">Recent Leave Requests</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+        <tr>
+          <th class="py-3 px-4 text-left">Employee</th>
+          <th class="py-3 px-4 text-left">From</th>
+          <th class="py-3 px-4 text-left">To</th>
+          <th class="py-3 px-4 text-left">Type</th>
+          <th class="py-3 px-4 text-left">Status</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-700">
+        {% for leave in recent_leaves %}
+        <tr class="border-b">
+          <td class="py-3 px-4">{{ leave.employee.user.username }}</td>
+          <td class="py-3 px-4">{{ leave.start_date }}</td>
+          <td class="py-3 px-4">{{ leave.end_date }}</td>
+          <td class="py-3 px-4">{{ leave.leave_type }}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-1 rounded-full text-xs font-semibold 
+              {% if leave.status == 'PENDING' %} bg-yellow-100 text-yellow-800 
+              {% elif leave.status == 'APPROVED' %} bg-green-100 text-green-800 
+              {% else %} bg-red-100 text-red-800 {% endif %}">
+              {{ leave.status }}
+            </span>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center py-4">No recent leave requests.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

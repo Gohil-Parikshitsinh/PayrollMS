@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | PayrollMS</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font: Inter (clean, modern like Zoho) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome for Icons -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"
+  />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .glass {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.85);
+    }
+    .sidebar-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-[#f3f4f6] text-[#111827]">
+
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 hidden md:block bg-[#1e1e2d] text-white p-4 shadow-lg">
+      <div class="text-3xl font-bold px-4 py-6 text-white">PayrollMS</div>
+      <nav class="space-y-2 mt-4 text-md font-medium">
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
+          <i class="fas fa-home text-white"></i> Dashboard
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
+          <i class="fas fa-users text-white"></i> Employees
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
+          <i class="fas fa-calendar-check text-white"></i> Attendance
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
+          <i class="fas fa-plane-departure text-white"></i> Leaves
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
+          <i class="fas fa-wallet text-white"></i> Payroll
+        </a>
+        <a href="{% url 'users:logout' %}" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg text-red-400 hover:bg-red-900 transition duration-150">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- Topbar -->
+      <header class="flex justify-between items-center p-4 bg-white shadow">
+        <h1 class="text-lg font-semibold">Welcome, {{ request.user.username }}</h1>
+        <span class="text-sm text-gray-500">Role: {{ request.user.role }}</span>
+      </header>
+
+      <!-- Page Content -->
+      <main class="flex-1 overflow-y-auto p-6 bg-white">
+        {% block content %}
+        <div class="text-center text-gray-500 text-lg">Dashboard Content Goes Here</div>
+        {% endblock %}
+      </main>
+
+    </div>
+  </div>
+
+</body>
+</html>
+`

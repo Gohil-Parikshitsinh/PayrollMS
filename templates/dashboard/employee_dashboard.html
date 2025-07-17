@@ -1,0 +1,96 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6 text-[#1e1e2d]">Welcome, {{ employee.user.username }}</h1>
+
+<!-- Attendance Summary -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+  <div class="bg-white p-5 rounded-lg shadow text-center">
+    <div class="text-gray-500">Present This Month</div>
+    <div class="text-3xl font-bold text-green-600">{{ total_present }}</div>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow text-center">
+    <div class="text-gray-500">Leaves Taken</div>
+    <div class="text-3xl font-bold text-yellow-500">{{ total_leaves }}</div>
+  </div>
+  <div class="bg-white p-5 rounded-lg shadow text-center">
+    <div class="text-gray-500">Absent</div>
+    <div class="text-3xl font-bold text-red-500">{{ total_absent }}</div>
+  </div>
+</div>
+
+<!-- Leave Balance -->
+{% if leave_balance %}
+<div class="mb-8">
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-lg font-semibold text-[#1e1e2d] mb-2">Leave Balance</h2>
+    <p class="text-sm text-gray-600">Remaining Leaves: <span class="font-bold">{{ leave_balance.remaining_leaves }}</span></p>
+    <p class="text-sm text-gray-600">Total Leaves Taken: <span class="font-bold">{{ leave_balance.leaves_taken }}</span></p>
+  </div>
+</div>
+{% endif %}
+
+<!-- Last Salary -->
+{% if last_salary %}
+<div class="mb-8">
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-lg font-semibold text-[#1e1e2d] mb-2">Last Payslip</h2>
+    <p class="text-sm text-gray-600">Month: <span class="font-bold">{{ last_salary.created_at|date:"F Y" }}</span></p>
+    <p class="text-sm text-gray-600">Net Salary: <span class="font-bold">₹{{ last_salary.net_salary|floatformat:2 }}</span></p>
+    <a href="#" class="text-sm text-blue-600 hover:underline">View Payslip</a>
+  </div>
+</div>
+{% endif %}
+
+<!-- Recent Leave Requests -->
+<div class="mb-8">
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-lg font-semibold text-[#1e1e2d] mb-4">Recent Leave Requests</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+          <tr>
+            <th class="py-2 px-4 text-left">From</th>
+            <th class="py-2 px-4 text-left">To</th>
+            <th class="py-2 px-4 text-left">Type</th>
+            <th class="py-2 px-4 text-left">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for leave in recent_leaves %}
+          <tr class="border-b">
+            <td class="py-2 px-4">{{ leave.start_date }}</td>
+            <td class="py-2 px-4">{{ leave.end_date }}</td>
+            <td class="py-2 px-4">{{ leave.leave_type }}</td>
+            <td class="py-2 px-4">
+              <span class="px-2 py-1 text-xs rounded-full font-semibold
+                {% if leave.status == 'PENDING' %} bg-yellow-100 text-yellow-800
+                {% elif leave.status == 'APPROVED' %} bg-green-100 text-green-800
+                {% else %} bg-red-100 text-red-800 {% endif %}">
+                {{ leave.status }}
+              </span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="text-center py-4">No leave requests found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Optional: Upcoming Holidays -->
+{% if upcoming_holidays %}
+<div class="mb-8">
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-lg font-semibold text-[#1e1e2d] mb-2">Upcoming Holidays</h2>
+    <ul class="text-sm text-gray-600 list-disc pl-5">
+      {% for holiday in upcoming_holidays %}
+      <li>{{ holiday.date }} - {{ holiday.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

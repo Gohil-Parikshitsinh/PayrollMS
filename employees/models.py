@@ -14,7 +14,7 @@ class Designation(models.Model):
         return self.title
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='employee')
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     designation = models.ForeignKey(Designation, on_delete=models.SET_NULL, null=True)
     date_of_joining = models.DateField()
