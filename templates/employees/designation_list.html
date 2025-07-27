@@ -1,0 +1,33 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div class="mb-4 flex justify-between items-center">
+  <h2 class="text-xl font-bold">Designations</h2>
+  <a href="{% url 'employees:designation_create' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Add Designation</a>
+</div>
+
+<table class="w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+  <thead>
+    <tr class="bg-slate-200 text-left">
+      <th class="p-3">#</th>
+      <th class="p-3">Title</th>
+      <th class="p-3">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for designation in designations %}
+    <tr class="border-t">
+      <td class="p-3">{{ forloop.counter }}</td>
+      <td class="p-3">{{ designation.title }}</td>
+      <td class="p-3 space-x-2">
+        <a href="{% url 'employees:designation_edit' designation.pk %}" class="text-blue-600 hover:underline">Edit</a>
+        <a href="{% url 'employees:designation_delete' designation.pk %}" class="text-red-600 hover:underline">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3" class="text-center text-gray-500 py-4">No designations found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
