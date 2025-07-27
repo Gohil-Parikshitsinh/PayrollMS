@@ -1,0 +1,12 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow text-center">
+  <h2 class="text-xl font-semibold mb-4">Delete Department</h2>
+  <p class="mb-6 text-gray-600">Are you sure you want to delete <strong>{{ object.name }}</strong>?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Yes, Delete</button>
+    <a href="{% url 'employees:department_list' %}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+  </form>
+</div>
+{% endblock %}

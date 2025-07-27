@@ -36,13 +36,23 @@
     <!-- Sidebar -->
     <aside class="w-64 hidden md:block bg-[#1e1e2d] text-white p-4 shadow-lg">
       <div class="text-3xl font-bold px-4 py-6 text-white">PayrollMS</div>
-      <nav class="space-y-2 mt-4 text-md font-medium">
+      <nav class="space-y-2 mt-4 text-lg font-medium">
         <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
           <i class="fas fa-home text-white"></i> Dashboard
         </a>
-        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
-          <i class="fas fa-users text-white"></i> Employees
-        </a>
+        <div class="sidebar-link px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
+  <div class="flex items-center justify-between cursor-pointer" onclick="toggleDropdown('employeeMenu')">
+    <span class="flex items-center gap-3">
+      <i class="fas fa-users text-white"></i> Employees
+    </span>
+    <i class="fas fa-chevron-down text-sm"></i>
+  </div>
+  <div id="employeeMenu" class="ml-7 mt-2 space-y-2 hidden">
+    <a href="{% url 'employees:department_list' %}" class="block text-md hover:text-white text-gray-300">Departments</a>
+    <a href="{% url 'employees:designation_list' %}" class="block text-md hover:text-white text-gray-300">Designations</a>
+  </div>
+</div>
+
         <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-2 rounded-lg transition duration-150 hover:bg-[#2a2a3c]">
           <i class="fas fa-calendar-check text-white"></i> Attendance
         </a>
@@ -78,4 +88,11 @@
   </div>
 
 </body>
+<script>
+  function toggleDropdown(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('hidden');
+  }
+</script>
+
 </html>
