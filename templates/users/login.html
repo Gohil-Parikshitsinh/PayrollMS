@@ -1,19 +1,70 @@
+{% load static %}
+{% load form_filters %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+  <meta charset="UTF-8" />
+  <title>Login | PayrollMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+    }
+  </style>
 </head>
-<body>
-    <h2>Login</h2>
-    {% if messages %}
-      {% for message in messages %}
-        <p style="color:red;">{{ message }}</p>
-      {% endfor %}
-    {% endif %}
-    <form method="post">
+<body class="min-h-screen flex items-center justify-center bg-[#f9f9f9]">
+
+  <div class="flex w-[95%] max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden border border-[#e0e0e0]">
+
+    <!-- Left Image -->
+    <div class="w-1/2 hidden md:block relative">
+      <img src="{% static 'images/loginbg.png' %}" alt="PayrollMS Illustration"
+           class="object-cover w-full h-full rounded-l-2xl opacity-90" />
+<!--      <div class="absolute inset-0 bg-[#1e1e1e]/60 flex items-center justify-center">-->
+<!--        <h1 class="text-white text-3xl font-bold px-6 text-center drop-shadow-lg">Welcome to PayrollMS</h1>-->
+<!--      </div>-->
+    </div>
+
+    <!-- Right Form -->
+    <div class="w-full md:w-1/2 p-12 bg-white">
+      <h2 class="text-3xl font-bold text-center text-[#111111] mb-8">Login to Your Account</h2>
+
+      {% if messages %}
+        <div class="mb-4">
+          {% for message in messages %}
+            <p class="text-red-600 text-sm text-center">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" class="space-y-6">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+
+        <!-- Username -->
+        <div>
+          <label for="username" class="block text-sm font-medium text-[#555555] mb-1">Username</label>
+          {{ form.username|add_class:"w-full px-4 py-2 border border-[#e0e0e0] rounded-md bg-white text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#2684FF]" }}
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-[#555555] mb-1">Password</label>
+          {{ form.password|add_class:"w-full px-4 py-2 border border-[#e0e0e0] rounded-md bg-white text-[#111111] focus:outline-none focus:ring-2 focus:ring-[#2684FF]" }}
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+                class="w-full bg-[#2684FF] text-white py-3 rounded-md hover:bg-[#1e6fcb] transition font-semibold tracking-wide shadow-sm">
+          Login
+        </button>
+      </form>
+
+      <p class="text-center text-xs text-[#888888] mt-8">© 2025 PayrollMS. All rights reserved.</p>
+    </div>
+
+  </div>
 </body>
 </html>
