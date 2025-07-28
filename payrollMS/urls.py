@@ -20,7 +20,7 @@ from django.urls import path, include
 
 
 def homepage(request):
-    return HttpResponse("Welcome to Payroll Management System")
+    return HttpResponse("Welcome to Payroll Management System <br><br> <a href='/users/login'>Login</a>")
 def admin_dashboard(request):
     return HttpResponse("Admin Dashboard")
 

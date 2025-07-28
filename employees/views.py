@@ -1,7 +1,7 @@
 # employees/views.py
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Designation, Department
-from .forms import DesignationForm, DepartmentForm
+from .models import Designation, Department, Employee
+from .forms import DesignationForm, DepartmentForm, EmployeeForm, UserForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -80,3 +80,80 @@ def department_delete(request, pk):
         department.delete()
         return redirect('employees:department_list')
     return render(request, 'employees/department_confirm_delete.html', {'object': department})
+
+
+@login_required
+@user_passes_test(is_admin)
+def employee_list(request):
+    employees = Employee.objects.select_related('user', 'department', 'designation').all()
+    return render(request, 'employees/employee_list.html', {'employees': employees})
+
+# Create Employee
+@login_required
+@user_passes_test(is_admin)
+def employee_create(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST)
+        emp_form = EmployeeForm(request.POST)
+        if user_form.is_valid() and emp_form.is_valid():
+            user = user_form.save(commit=False)
+            user.role = 'EMPLOYEE'
+            user.set_password(user.password)
+            user.save()
+            employee = emp_form.save(commit=False)
+            employee.user = user
+            employee.save()
+            messages.success(request, 'Employee created successfully.')
+            return redirect('employees:employee_list')
+    else:
+        user_form = UserForm()
+        emp_form = EmployeeForm()
+    return render(request, 'employees/employee_form.html', {
+        'user_form': user_form,
+        'emp_form': emp_form,
+        'title': 'Create Employee'
+    })
+
+# View Employee Detail
+@login_required
+@user_passes_test(is_admin)
+def employee_detail(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    return render(request, 'employees/employee_detail.html', {'employee': employee})
+
+@login_required
+@user_passes_test(is_admin)
+def employee_edit(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    user = employee.user
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=user)
+        emp_form = EmployeeForm(request.POST, instance=employee)
+        if user_form.is_valid() and emp_form.is_valid():
+            user = user_form.save(commit=False)
+            password = user_form.cleaned_data.get('password')
+            if password:
+                user.set_password(password)
+            user.save()
+            emp_form.save()
+            messages.success(request, 'Employee updated successfully.')
+            return redirect('employees:employee_list')
+    else:
+        user_form = UserForm(instance=user)
+        emp_form = EmployeeForm(instance=employee)
+    return render(request, 'employees/employee_form.html', {
+        'user_form': user_form,
+        'emp_form': emp_form,
+        'title': 'Edit Employee'
+    })
+
+# Delete Employee
+@login_required
+@user_passes_test(is_admin)
+def employee_delete(request, pk):
+    employee = get_object_or_404(Employee, pk=pk)
+    if request.method == 'POST':
+        employee.user.delete()  # This also deletes employee due to OneToOne
+        messages.success(request, 'Employee deleted.')
+        return redirect('employees:employee_list')
+    return render(request, 'employees/employee_confirm_delete.html', {'employee': employee})

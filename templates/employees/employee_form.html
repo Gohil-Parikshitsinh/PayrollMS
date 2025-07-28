@@ -1,0 +1,72 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow">
+  <h2 class="text-xl font-bold mb-4 text-[#1e1e2d]">{{ title }}</h2>
+  <form method="post" class="space-y-5">
+  {% csrf_token %}
+
+  <h2 class="text-lg font-semibold">User Details</h2>
+  {{ user_form.non_field_errors }}
+    <!-- First Name -->
+<div>
+  <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+  {{ user_form.first_name }}
+</div>
+
+<!-- Last Name -->
+<div>
+  <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+  {{ user_form.last_name }}
+</div>
+
+  <div>
+
+    {{ user_form.username.label_tag }}
+    {{ user_form.username }}
+  </div>
+  <div>
+    {{ user_form.email.label_tag }}
+    {{ user_form.email }}
+  </div>
+  <div>
+    <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+    {{ user_form.role }}
+  </div>
+  <div>
+    {{ user_form.password.label_tag }}
+    {{ user_form.password }}
+    {% if title == "Edit Employee" %}
+      <small class="text-gray-500 text-xs">Leave blank to keep existing password.</small>
+    {% endif %}
+  </div>
+
+  <h2 class="text-lg font-semibold">Employee Info</h2>
+  {{ emp_form.non_field_errors }}
+  <div>
+    {{ emp_form.department.label_tag }}
+    {{ emp_form.department }}
+  </div>
+  <div>
+    {{ emp_form.designation.label_tag }}
+    {{ emp_form.designation }}
+  </div>
+  <div>
+    {{ emp_form.date_of_joining.label_tag }}
+    {{ emp_form.date_of_joining }}
+  </div>
+  <div>
+    {{ emp_form.contact_number.label_tag }}
+    {{ emp_form.contact_number }}
+  </div>
+  <div>
+    {{ emp_form.address.label_tag }}
+    {{ emp_form.address }}
+  </div>
+
+  <button type="submit" class="bg-[#1e2a3a] text-white px-4 py-2 rounded hover:bg-[#111b29]">
+    {{ title }}
+  </button>
+</form>
+
+</div>
+{% endblock %}

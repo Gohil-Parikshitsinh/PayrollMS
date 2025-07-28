@@ -1,0 +1,19 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow">
+  <h2 class="text-xl font-bold mb-4 text-[#1e1e2d]">Employee Profile</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+    <p><strong>Name:</strong> {{ employee.user.get_full_name }}</p>
+    <p><strong>Email:</strong> {{ employee.user.email }}</p>
+    <p><strong>Department:</strong> {{ employee.department }}</p>
+    <p><strong>Designation:</strong> {{ employee.designation }}</p>
+    <p><strong>Date of Joining:</strong> {{ employee.date_of_joining }}</p>
+    <p><strong>Contact:</strong> {{ employee.contact_number }}</p>
+    <p><strong>Address:</strong> {{ employee.address }}</p>
+  </div>
+  <div class="mt-6 flex gap-4">
+    <a href="{% url 'employees:employee_edit' employee.pk %}" class="text-blue-600 hover:underline">Edit</a>
+    <a href="{% url 'employees:employee_delete' employee.pk %}" class="text-red-600 hover:underline">Delete</a>
+  </div>
+</div>
+{% endblock %}

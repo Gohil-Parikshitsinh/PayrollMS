@@ -48,6 +48,7 @@
     <i class="fas fa-chevron-down text-sm"></i>
   </div>
   <div id="employeeMenu" class="ml-7 mt-2 space-y-2 hidden">
+    <a href="{% url 'employees:employee_list' %}" class="block text-md hover:text-white text-gray-300">Employee List</a>
     <a href="{% url 'employees:department_list' %}" class="block text-md hover:text-white text-gray-300">Departments</a>
     <a href="{% url 'employees:designation_list' %}" class="block text-md hover:text-white text-gray-300">Designations</a>
   </div>
